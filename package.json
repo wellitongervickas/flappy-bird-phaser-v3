@@ -1,12 +1,12 @@
 {
-  "name": "phaser-webpack-boilerplate",
+  "name": "flappy-bird-arcade",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
-    "dev":  "webpack serve --config webpack.common.js",
+    "dev": "webpack serve --config webpack.common.js",
     "dev-fb": "webpack serve --config webpack.fb.js"
   },
   "author": "",
