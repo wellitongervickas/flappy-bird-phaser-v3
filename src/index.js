@@ -8,6 +8,11 @@ const config = {
   physics: {
     // Arcade physics plugin, anages physics simulation
     default: "arcade",
+    arcade: {
+      gravity: {
+        y: 200,
+      },
+    },
   },
   scene: {
     preload,
@@ -18,11 +23,15 @@ const config = {
 
 new Phaser.Game(config);
 
+let bird,
+  totalDelta = 0;
+
 // loading assets, such as image, music, animations
 function preload() {
   // 'this' context = scene
   // contains functions and properties we can use
   this.load.image("sky", "assets/sky.png");
+  this.load.image("bird", "assets/bird.png");
 }
 
 // create instance objects, interactions, basic setup
@@ -46,7 +55,28 @@ function create() {
    * y=1.0-------y=1.0-------y=1.0
 
    */
+
+  bird = this.physics.add
+    .sprite(config.width * 0.1, config.height / 2, "bird")
+    .setOrigin(0);
+
+  bird.body.gravity.y = 200;
+  /**
+   * time 0 = 0px/s
+   * time 1 = 100px/s
+   * it double after every time update
+   */
 }
 
 // animaton loop
-function update() {}
+// 60fps times per second
+// deltaTime = time of last frame
+// 60 * 16 = 1000ms
+function update(time, deltaTime) {
+  totalDelta += deltaTime;
+
+  if (totalDelta < 1000) return;
+  console.log(bird.body.velocity.y);
+
+  totalDelta = 0;
+}
