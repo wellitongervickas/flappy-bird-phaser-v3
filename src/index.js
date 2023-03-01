@@ -9,8 +9,14 @@ const config = {
     // Arcade physics plugin, anages physics simulation
     default: "arcade",
     arcade: {
+      debug: true,
       gravity: {
-        y: 200,
+        /**
+         * time 0 = 0px/s
+         * time 1 = 200px/s
+         * it double after every time update
+         */
+        // y: 200,
       },
     },
   },
@@ -25,6 +31,8 @@ new Phaser.Game(config);
 
 let bird,
   totalDelta = 0;
+
+const VELOCITY = 500;
 
 // loading assets, such as image, music, animations
 function preload() {
@@ -42,41 +50,36 @@ function create() {
   // origin canvas middle= x, y
   this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
   /**
-   * 
-   * x=0.0-------x=0.5-------x=1.0
-   * y=0.0-------y=0.0-------y=0.0
-   * 
-   * 
-   * x=0.0-------x=0.5-------x=1.0
-   * y=0.5-------y=0.5-------y=0.5
-   * 
-   * 
-   * x=0.0-------x=0.5-------x=1.0
-   * y=1.0-------y=1.0-------y=1.0
-
+   * y/x
+   * |x=0.0|||||||x=0.5|||||||x=1.0|
+   * |y=0.0|||||||y=0.0|||||||y=0.0|
+   * |||||||||||||||||||||||||||||||
+   * |||||||||||||||||||||||||||||||
+   * |x=0.0|||||||x=0.5|||||||x=1.0|
+   * |y=0.5|||||||y=0.5|||||||y=0.5|
+   * |||||||||||||||||||||||||||||||
+   * |||||||||||||||||||||||||||||||
+   * |x=0.0|||||||x=0.5|||||||x=1.0|
+   * |y=1.0|||||||y=1.0|||||||y=1.0|
    */
 
+  // add(x, y)
   bird = this.physics.add
     .sprite(config.width * 0.1, config.height / 2, "bird")
     .setOrigin(0);
 
-  bird.body.gravity.y = 200;
-  /**
-   * time 0 = 0px/s
-   * time 1 = 100px/s
-   * it double after every time update
-   */
+  bird.body.velocity.x = VELOCITY;
 }
 
 // animaton loop
 // 60fps times per second
-// deltaTime = time of last frame
+// delta = time of last frame
 // 60 * 16 = 1000ms
-function update(time, deltaTime) {
-  totalDelta += deltaTime;
 
-  if (totalDelta < 1000) return;
-  console.log(bird.body.velocity.y);
-
-  totalDelta = 0;
+function update(time, delta) {
+  if (bird.x >= config.width - bird.width) {
+    bird.body.velocity.x = -VELOCITY;
+  } else if (bird.x <= 0) {
+    bird.body.velocity.x = VELOCITY;
+  }
 }
