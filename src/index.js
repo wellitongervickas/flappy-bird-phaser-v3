@@ -16,7 +16,7 @@ const config = {
          * time 1 = 200px/s
          * it double after every time update
          */
-        // y: 200,
+        y: 200,
       },
     },
   },
@@ -32,7 +32,7 @@ new Phaser.Game(config);
 let bird,
   totalDelta = 0;
 
-const VELOCITY = 500;
+const VELOCITY = 200;
 
 // loading assets, such as image, music, animations
 function preload() {
@@ -68,7 +68,8 @@ function create() {
     .sprite(config.width * 0.1, config.height / 2, "bird")
     .setOrigin(0);
 
-  bird.body.velocity.x = VELOCITY;
+  this.input.on("pointerdown", flat);
+  this.input.keyboard.on("keydown-SPACE", flat);
 }
 
 // animaton loop
@@ -76,10 +77,8 @@ function create() {
 // delta = time of last frame
 // 60 * 16 = 1000ms
 
-function update(time, delta) {
-  if (bird.x >= config.width - bird.width) {
-    bird.body.velocity.x = -VELOCITY;
-  } else if (bird.x <= 0) {
-    bird.body.velocity.x = VELOCITY;
-  }
+function update(time, delta) {}
+
+function flat() {
+  bird.body.velocity.y = -VELOCITY;
 }
