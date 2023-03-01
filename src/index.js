@@ -16,7 +16,7 @@ const config = {
          * time 1 = 200px/s
          * it double after every time update
          */
-        y: 200,
+        // y: 600,
       },
     },
   },
@@ -29,10 +29,16 @@ const config = {
 
 new Phaser.Game(config);
 
-let bird,
-  totalDelta = 0;
+let bird, upperPipe, lowerPipe;
 
-const VELOCITY = 200;
+const pipeVeticalDistanceRange = [150, 200];
+const pipeVerticalDistance = Phaser.Math.Between(...pipeVeticalDistanceRange);
+
+const FLAP_VELOCITY = 300;
+const INITIAL_BIRD_POSITION = {
+  y: config.height / 2,
+  x: config.width * 0.1,
+};
 
 // loading assets, such as image, music, animations
 function preload() {
@@ -40,6 +46,7 @@ function preload() {
   // contains functions and properties we can use
   this.load.image("sky", "assets/sky.png");
   this.load.image("bird", "assets/bird.png");
+  this.load.image("pipe", "assets/pipe.png");
 }
 
 // create instance objects, interactions, basic setup
@@ -65,8 +72,17 @@ function create() {
 
   // add(x, y)
   bird = this.physics.add
-    .sprite(config.width * 0.1, config.height / 2, "bird")
+    .sprite(INITIAL_BIRD_POSITION.x, INITIAL_BIRD_POSITION.y, "bird")
     .setOrigin(0);
+
+  bird.body.gravity.y = 600;
+
+  upperPipe = this.physics.add
+    .sprite(400, pipeVerticalDistance, "pipe")
+    .setOrigin(0, 1);
+  lowerPipe = this.physics.add
+    .sprite(upperPipe.x, upperPipe.y + pipeVerticalDistance, "pipe")
+    .setOrigin(0, 0);
 
   this.input.on("pointerdown", flat);
   this.input.keyboard.on("keydown-SPACE", flat);
@@ -77,8 +93,18 @@ function create() {
 // delta = time of last frame
 // 60 * 16 = 1000ms
 
-function update(time, delta) {}
+function update(time, delta) {
+  if (bird.y >= config.height || bird.y <= 0 - bird.height) {
+    restartBirdPosition();
+  }
+}
+
+function restartBirdPosition() {
+  bird.x = INITIAL_BIRD_POSITION.x;
+  bird.y = INITIAL_BIRD_POSITION.y;
+  bird.body.velocity.y = 0;
+}
 
 function flat() {
-  bird.body.velocity.y = -VELOCITY;
+  bird.body.velocity.y = -FLAP_VELOCITY;
 }
