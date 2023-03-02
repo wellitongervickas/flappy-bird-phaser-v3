@@ -1,10 +1,24 @@
 import Phaser from "phaser";
+import ScenePlay from "./scenes/play";
+
+const WIDTH = 800;
+const HEIGHT = 600;
+
+const BIRD_POSITION = {
+  x: WIDTH * 0.1,
+  y: HEIGHT / 2,
+};
+
+const SHARED_CONFIG = {
+  width: WIDTH,
+  height: HEIGHT,
+  startPosition: BIRD_POSITION,
+};
 
 const config = {
   // WebGL (Web graphics library) API form rendering 2 and 3D graphics
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  ...SHARED_CONFIG,
   physics: {
     // Arcade physics plugin, anages physics simulation
     default: "arcade",
@@ -20,129 +34,139 @@ const config = {
       },
     },
   },
-  scene: {
-    preload,
-    update,
-    create,
-  },
+  scene: [new ScenePlay(SHARED_CONFIG)],
+  // scene: {
+  //   preload,
+  //   update,
+  //   create,
+  // },
 };
 
 new Phaser.Game(config);
 
-let bird, pipes;
+// let bird, pipes;
 
-const PIPE_VERTICAL_DISTANCE_RANGE = [150, 200];
-const PIPE_HORIZONTAL_DISTANCE_RANGE = [450, 550];
+// const PIPE_VERTICAL_DISTANCE_RANGE = [150, 200];
+// const PIPE_HORIZONTAL_DISTANCE_RANGE = [450, 550];
 
-const PIPES_TO_RENDER = 4;
-const FLAP_VELOCITY = 300;
-const INITIAL_BIRD_POSITION = {
-  y: config.height / 2,
-  x: config.width * 0.1,
-};
+// const PIPES_TO_RENDER = 4;
+// const FLAP_VELOCITY = 300;
+// const INITIAL_BIRD_POSITION = {
+//   y: config.height / 2,
+//   x: config.width * 0.1,
+// };
 
 // loading assets, such as image, music, animations
-function preload() {
-  // 'this' context = scene
-  // contains functions and properties we can use
-  this.load.image("sky", "assets/sky.png");
-  this.load.image("bird", "assets/bird.png");
-  this.load.image("pipe", "assets/pipe.png");
-}
+// function preload() {
+//   // 'this' context = scene
+//   // contains functions and properties we can use
+//   this.load.image("sky", "assets/sky.png");
+//   this.load.image("bird", "assets/bird.png");
+//   this.load.image("pipe", "assets/pipe.png");
+// }
 
 // create instance objects, interactions, basic setup
-function create() {
-  // this.add.image(config.width / 2, config.height / 2, "sky");
-  // or change the origin
+// function create() {
+//   // this.add.image(config.width / 2, config.height / 2, "sky");
+//   // or change the origin
+//   // origin canvas middle= x, y
+//   this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
+//   /**
+//    * y/x
+//    * |x=0.0|||||||x=0.5|||||||x=1.0|
+//    * |y=0.0|||||||y=0.0|||||||y=0.0|
+//    * |||||||||||||||||||||||||||||||
+//    * |||||||||||||||||||||||||||||||
+//    * |x=0.0|||||||x=0.5|||||||x=1.0|
+//    * |y=0.5|||||||y=0.5|||||||y=0.5|
+//    * |||||||||||||||||||||||||||||||
+//    * |||||||||||||||||||||||||||||||
+//    * |x=0.0|||||||x=0.5|||||||x=1.0|
+//    * |y=1.0|||||||y=1.0|||||||y=1.0|
+//    */
+//   // add(x, y)
+//   bird = this.physics.add
+//     .sprite(INITIAL_BIRD_POSITION.x, INITIAL_BIRD_POSITION.y, "bird")
+//     .setOrigin(0);
+//   bird.body.gravity.y = 600;
+//   pipes = this.physics.add.group();
+//   for (let i = 0; i < PIPES_TO_RENDER; i++) {
+//     const upperPipe = pipes.create(0, 0, "pipe").setOrigin(0, 1);
+//     const lowerPipe = pipes.create(0, 0, "pipe").setOrigin(0, 0);
+//     placePipe(upperPipe, lowerPipe);
+//   }
+//   pipes.setVelocityX(-200);
+//   this.input.on("pointerdown", flat);
+//   this.input.keyboard.on("keydown-SPACE", flat);
+// }
 
-  // origin canvas middle= x, y
-  this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
-  /**
-   * y/x
-   * |x=0.0|||||||x=0.5|||||||x=1.0|
-   * |y=0.0|||||||y=0.0|||||||y=0.0|
-   * |||||||||||||||||||||||||||||||
-   * |||||||||||||||||||||||||||||||
-   * |x=0.0|||||||x=0.5|||||||x=1.0|
-   * |y=0.5|||||||y=0.5|||||||y=0.5|
-   * |||||||||||||||||||||||||||||||
-   * |||||||||||||||||||||||||||||||
-   * |x=0.0|||||||x=0.5|||||||x=1.0|
-   * |y=1.0|||||||y=1.0|||||||y=1.0|
-   */
+// function placePipe(upperPipe, lowerPipe) {
+//   const rightMostX = getRightMostPipe();
 
-  // add(x, y)
-  bird = this.physics.add
-    .sprite(INITIAL_BIRD_POSITION.x, INITIAL_BIRD_POSITION.y, "bird")
-    .setOrigin(0);
+//   const pipeVerticalDistance = Phaser.Math.Between(
+//     ...PIPE_VERTICAL_DISTANCE_RANGE
+//   );
 
-  bird.body.gravity.y = 600;
+//   const pipeHorizontalDistance = Phaser.Math.Between(
+//     ...PIPE_HORIZONTAL_DISTANCE_RANGE
+//   );
 
-  pipes = this.physics.add.group();
+//   const pipeVerticalPosition = Phaser.Math.Between(
+//     20,
+//     config.height - 20 - pipeVerticalDistance
+//   );
 
-  for (let i = 0; i < PIPES_TO_RENDER; i++) {
-    const upperPipe = pipes.create(0, 0, "pipe").setOrigin(0, 1);
-    const lowerPipe = pipes.create(0, 0, "pipe").setOrigin(0, 0);
+//   upperPipe.x = rightMostX + pipeHorizontalDistance;
+//   upperPipe.y = pipeVerticalPosition;
 
-    placePipe(upperPipe, lowerPipe);
-  }
+//   lowerPipe.x = upperPipe.x;
+//   lowerPipe.y = upperPipe.y + pipeVerticalDistance;
+// }
 
-  pipes.setVelocityX(-200);
+// function recyclePipes() {
+//   const tempPipes = [];
 
-  this.input.on("pointerdown", flat);
-  this.input.keyboard.on("keydown-SPACE", flat);
-}
+//   pipes.getChildren().forEach((pipe) => {
+//     if (pipe.getBounds().right <= 0) {
+//       tempPipes.push(pipe);
+//       if (tempPipes.length === 2) {
+//         placePipe(...tempPipes);
+//         // pipes.setVelocityX(p);
+//         console.log(pipes);
+//       }
+//     }
+//   });
+// }
 
-function placePipe(upperPipe, lowerPipe) {
-  const rightMostX = getRightMostPipe();
+// function getRightMostPipe() {
+//   let rightMostX = 0;
 
-  const pipeVerticalDistance = Phaser.Math.Between(
-    ...PIPE_VERTICAL_DISTANCE_RANGE
-  );
+//   pipes.getChildren().forEach(function (pipe) {
+//     rightMostX = Math.max(pipe.x, rightMostX);
+//   });
 
-  const pipeHorizontalDistance = Phaser.Math.Between(
-    ...PIPE_HORIZONTAL_DISTANCE_RANGE
-  );
-
-  const pipeVerticalPosition = Phaser.Math.Between(
-    20,
-    config.height - 20 - pipeVerticalDistance
-  );
-
-  upperPipe.x = rightMostX + pipeHorizontalDistance;
-  upperPipe.y = pipeVerticalPosition;
-
-  lowerPipe.x = upperPipe.x;
-  lowerPipe.y = upperPipe.y + pipeVerticalDistance;
-}
-
-function getRightMostPipe() {
-  let rightMostX = 0;
-
-  pipes.getChildren().forEach(function (pipe) {
-    rightMostX = Math.max(pipe.x, rightMostX);
-  });
-
-  return rightMostX;
-}
+//   return rightMostX;
+// }
 
 // animaton loop
 // 60fps times per second
 // delta = time of last frame
 // 60 * 16 = 1000ms
 
-function update(time, delta) {
-  if (bird.y >= config.height || bird.y <= 0 - bird.height) {
-    restartBirdPosition();
-  }
-}
+// function update(time, delta) {
+//   if (bird.y >= config.height || bird.y <= 0 - bird.height) {
+//     restartBirdPosition();
+//   }
 
-function restartBirdPosition() {
-  bird.x = INITIAL_BIRD_POSITION.x;
-  bird.y = INITIAL_BIRD_POSITION.y;
-  bird.body.velocity.y = 0;
-}
+//   recyclePipes();
+// }
 
-function flat() {
-  bird.body.velocity.y = -FLAP_VELOCITY;
-}
+// function restartBirdPosition() {
+//   bird.x = INITIAL_BIRD_POSITION.x;
+//   bird.y = INITIAL_BIRD_POSITION.y;
+//   bird.body.velocity.y = 0;
+// }
+
+// function flat() {
+//   bird.body.velocity.y = -FLAP_VELOCITY;
+// }
