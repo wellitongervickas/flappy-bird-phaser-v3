@@ -22,7 +22,7 @@ class Base extends Phaser.Scene {
     const fontSpace = fontSize + fontLineHeight;
 
     for (const index in menus) {
-      this.add
+      const menuItem = this.add
         .text(
           this.config.width * 0.5,
           this.config.height / menus.length + index * fontSpace,
@@ -31,7 +31,12 @@ class Base extends Phaser.Scene {
             fontSize,
           }
         )
+        .setInteractive()
         .setOrigin(0.5, 0);
+
+      menuItem.on("pointerdown", () => {
+        this.scene.start(menus[index].scene);
+      });
     }
   }
 }
