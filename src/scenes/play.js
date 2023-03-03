@@ -49,10 +49,13 @@ class Play extends Phaser.Scene {
   }
 
   createPause() {
-    this.add
+    const pauseButton = this.add
       .image(this.config.width - 16, this.config.height - 16, "pause")
+      .setInteractive()
       .setScale(3)
       .setOrigin(1, 1);
+
+    pauseButton.on("pointerdown", this.pauseGame.bind(this));
   }
 
   createBird() {
@@ -184,9 +187,7 @@ class Play extends Phaser.Scene {
     this.time.addEvent({
       delay: 1000,
       loop: false,
-      callback: () => {
-        this.scene.restart();
-      },
+      callback: this.restartGame.bind(this),
     });
   }
 
@@ -202,6 +203,15 @@ class Play extends Phaser.Scene {
     if (!bestScore || this.score > bestScore) {
       localStorage.setItem("bestScore", this.score);
     }
+  }
+
+  restartGame() {
+    this.scene.restart();
+  }
+
+  pauseGame() {
+    this.physics.pause();
+    this.scene.pause();
   }
 }
 
