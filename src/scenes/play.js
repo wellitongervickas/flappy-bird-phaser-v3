@@ -27,6 +27,7 @@ class Play extends Phaser.Scene {
     this.createPipes();
     this.createColliders();
     this.createScore();
+    this.createPause();
     this.applyEvents();
   }
 
@@ -40,10 +41,18 @@ class Play extends Phaser.Scene {
     this.load.image("sky", "assets/sky.png");
     this.load.image("bird", "assets/bird.png");
     this.load.image("pipe", "assets/pipe.png");
+    this.load.image("pause", "assets/pause.png");
   }
 
   createBackground() {
     this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
+  }
+
+  createPause() {
+    this.add
+      .image(this.config.width - 16, this.config.height - 16, "pause")
+      .setScale(3)
+      .setOrigin(1, 1);
   }
 
   createBird() {
@@ -146,6 +155,7 @@ class Play extends Phaser.Scene {
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
           this.increaseScore();
+          this.checkBestScoreStatus();
         }
       }
     });
