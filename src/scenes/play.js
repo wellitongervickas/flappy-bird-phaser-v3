@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-
-class Play extends Phaser.Scene {
+import Base from "./base";
+class Play extends Base {
   score;
   scoreText;
   bird;
@@ -10,11 +10,9 @@ class Play extends Phaser.Scene {
   pipeVerticalDistanceRange = [150, 200];
   pipeHorizontalDistanceRange = [450, 550];
   pipeMinVerticalDistanceGap = 20;
-  config;
 
   constructor(config) {
-    super("play");
-    this.config = config;
+    super(config, "play");
   }
 
   create() {
@@ -31,10 +29,6 @@ class Play extends Phaser.Scene {
     this.checkBirdStatus();
 
     this.recyclePipes();
-  }
-
-  createBackground() {
-    this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
   }
 
   createBird() {

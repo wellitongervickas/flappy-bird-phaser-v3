@@ -1,10 +1,9 @@
 import Phaser from "phaser";
+import Base from "./base";
 
-class Preload extends Phaser.Scene {
-  config;
-
-  constructor() {
-    super("preload");
+class Preload extends Base {
+  constructor(config) {
+    super(config, "preload");
   }
 
   preload() {
@@ -12,7 +11,7 @@ class Preload extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("menu");
+    this.scene.start("play");
   }
 
   loadAssets() {

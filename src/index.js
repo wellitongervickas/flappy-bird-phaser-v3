@@ -17,6 +17,10 @@ const SHARED_CONFIG = {
   startPosition: BIRD_POSITION,
 };
 
+const scenes = [PreloadScene, SceneMenu, ScenePlay];
+const createScene = (Scene) => new Scene(SHARED_CONFIG);
+const initScenes = () => scenes.map(createScene);
+
 const config = {
   // WebGL (Web graphics library) API form rendering 2 and 3D graphics
   type: Phaser.AUTO,
@@ -36,11 +40,7 @@ const config = {
       },
     },
   },
-  scene: [
-    PreloadScene,
-    new SceneMenu(SHARED_CONFIG),
-    new ScenePlay(SHARED_CONFIG),
-  ],
+  scene: initScenes(),
   // scene: {
   //   preload,
   //   update,

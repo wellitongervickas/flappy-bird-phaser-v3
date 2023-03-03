@@ -1,23 +1,12 @@
-import Phaser from "phaser";
+import Base from "./base";
 
-class Menu extends Phaser.Scene {
-  config;
-
+class Menu extends Base {
   constructor(config) {
-    super("menu");
-    this.config = config;
+    super(config, "menu");
   }
-
-  preload() {}
 
   create() {
     this.createBackground();
-  }
-
-  update() {}
-
-  createBackground() {
-    this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
   }
 }
 
