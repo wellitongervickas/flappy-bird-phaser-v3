@@ -11,7 +11,7 @@ class Preload extends Base {
   }
 
   create() {
-    this.scene.start("play");
+    this.scene.start("menu");
   }
 
   loadAssets() {
