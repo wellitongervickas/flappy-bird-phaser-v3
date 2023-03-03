@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 
 class Play extends Phaser.Scene {
+  score;
+  scoreText;
   bird;
   flapVelocity = 300;
   pipes;
@@ -24,6 +26,7 @@ class Play extends Phaser.Scene {
     this.createBird();
     this.createPipes();
     this.createColliders();
+    this.createScore();
     this.applyEvents();
   }
 
@@ -85,6 +88,14 @@ class Play extends Phaser.Scene {
     this.physics.add.collider(this.bird, this.pipes, this.gameOver.bind(this));
   }
 
+  createScore() {
+    this.score = 0;
+    this.scoreText = this.add.text(16, 16, `Score: ${0}`, {
+      fontSize: "32px",
+      fill: "#000",
+    });
+  }
+
   applyEvents() {
     this.input.on("pointerdown", this.flat.bind(this));
     this.input.keyboard.on("keydown-SPACE", this.flat.bind(this));
@@ -123,6 +134,7 @@ class Play extends Phaser.Scene {
         tempPipes.push(pipe);
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
+          this.increaseScore();
         }
       }
     });
@@ -143,11 +155,21 @@ class Play extends Phaser.Scene {
   }
 
   gameOver() {
-    // this.bird.x = this.config.startPosition.x;
-    // this.bird.y = this.config.startPosition.y;
-    // this.bird.body.velocity.y = 0;
     this.physics.pause();
     this.bird.setTint("0xFF0000");
+
+    this.time.addEvent({
+      delay: 1000,
+      loop: false,
+      callback: () => {
+        this.scene.restart();
+      },
+    });
+  }
+
+  increaseScore() {
+    this.score += 1;
+    this.scoreText.setText(`Score: ${this.score}`);
   }
 }
 
