@@ -95,6 +95,10 @@ class Play extends Phaser.Scene {
       fill: "#000",
     });
 
+    this.createBestScore();
+  }
+
+  createBestScore() {
     const bestScore = localStorage.getItem("bestScore");
 
     this.add.text(16, 52, `Best score: ${bestScore || 0}`, {
@@ -165,12 +169,7 @@ class Play extends Phaser.Scene {
     this.physics.pause();
     this.bird.setTint("0xFF0000");
 
-    const bestScoreText = localStorage.getItem("bestScore");
-    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
-
-    if (!bestScore || this.scoreText > bestScore) {
-      localStorage.setItem("bestScore", this.score);
-    }
+    this.checkBestScoreStatus();
 
     this.time.addEvent({
       delay: 1000,
@@ -184,6 +183,15 @@ class Play extends Phaser.Scene {
   increaseScore() {
     this.score += 1;
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  checkBestScoreStatus() {
+    const bestScoreText = localStorage.getItem("bestScore");
+    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+
+    if (!bestScore || this.score > bestScore) {
+      localStorage.setItem("bestScore", this.score);
+    }
   }
 }
 
