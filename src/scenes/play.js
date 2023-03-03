@@ -16,7 +16,7 @@ class Play extends Base {
   }
 
   create() {
-    this.createBackground();
+    super.create();
     this.createBird();
     this.createPipes();
     this.createColliders();

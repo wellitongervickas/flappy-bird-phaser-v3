@@ -12,7 +12,7 @@ class Menu extends Base {
   }
 
   create() {
-    this.createBackground();
+    super.create();
     this.createMenu(this.menus);
   }
 }
