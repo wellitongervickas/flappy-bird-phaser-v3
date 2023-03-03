@@ -47,6 +47,18 @@ class Base extends Phaser.Scene {
       });
     }
   }
+
+  createBackButton() {
+    const backButton = this.add
+      .image(this.config.width * 0.9, this.config.height * 0.9, "back")
+      .setInteractive()
+      .setScale(2)
+      .setOrigin(1);
+
+    backButton.on("pointerup", () => {
+      this.scene.start("menu");
+    });
+  }
 }
 
 export default Base;

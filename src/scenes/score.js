@@ -25,17 +25,6 @@ class Score extends Base {
       )
       .setOrigin(0.5);
   }
-
-  createBackButton() {
-    const backButton = this.add
-      .image(this.config.width * 0.9, this.config.height * 0.9, "back")
-      .setInteractive()
-      .setOrigin(0, 0);
-
-    backButton.on("pointerup", () => {
-      this.scene.start("menu");
-    });
-  }
 }
 
 export default Score;
