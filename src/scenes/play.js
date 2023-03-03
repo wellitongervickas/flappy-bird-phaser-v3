@@ -94,6 +94,13 @@ class Play extends Phaser.Scene {
       fontSize: "32px",
       fill: "#000",
     });
+
+    const bestScore = localStorage.getItem("bestScore");
+
+    this.add.text(16, 52, `Best score: ${bestScore || 0}`, {
+      fontSize: "18px",
+      fill: "#000",
+    });
   }
 
   applyEvents() {
@@ -157,6 +164,13 @@ class Play extends Phaser.Scene {
   gameOver() {
     this.physics.pause();
     this.bird.setTint("0xFF0000");
+
+    const bestScoreText = localStorage.getItem("bestScore");
+    const bestScore = bestScoreText && parseInt(bestScoreText, 10);
+
+    if (!bestScore || this.scoreText > bestScore) {
+      localStorage.setItem("bestScore", this.score);
+    }
 
     this.time.addEvent({
       delay: 1000,
