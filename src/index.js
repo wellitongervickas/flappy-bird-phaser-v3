@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import PreloadScene from "./scenes/preload";
 import ScenePlay from "./scenes/play";
 import SceneMenu from "./scenes/menu";
 
@@ -35,7 +36,11 @@ const config = {
       },
     },
   },
-  scene: [new SceneMenu(SHARED_CONFIG), new ScenePlay(SHARED_CONFIG)],
+  scene: [
+    PreloadScene,
+    new SceneMenu(SHARED_CONFIG),
+    new ScenePlay(SHARED_CONFIG),
+  ],
   // scene: {
   //   preload,
   //   update,

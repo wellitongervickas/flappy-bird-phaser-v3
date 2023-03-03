@@ -8,9 +8,7 @@ class Menu extends Phaser.Scene {
     this.config = config;
   }
 
-  preload() {
-    this.loadAssets();
-  }
+  preload() {}
 
   create() {
     this.createBackground();
@@ -18,12 +16,8 @@ class Menu extends Phaser.Scene {
 
   update() {}
 
-  loadAssets() {
-    this.load.image("sky", "assets/sky.png");
-  }
-
   createBackground() {
-    this.add.image(0, 0, "sky").setOrigin(0, 0);
+    this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
   }
 }
 

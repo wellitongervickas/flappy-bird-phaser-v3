@@ -17,10 +17,6 @@ class Play extends Phaser.Scene {
     this.config = config;
   }
 
-  preload() {
-    this.loadAssets();
-  }
-
   create() {
     this.createBackground();
     this.createBird();
@@ -37,25 +33,8 @@ class Play extends Phaser.Scene {
     this.recyclePipes();
   }
 
-  loadAssets() {
-    this.load.image("sky", "assets/sky.png");
-    this.load.image("bird", "assets/bird.png");
-    this.load.image("pipe", "assets/pipe.png");
-    this.load.image("pause", "assets/pause.png");
-  }
-
   createBackground() {
     this.add.image(0, 0, "sky").setOrigin(0, 0); // origin of image middle y , x
-  }
-
-  createPause() {
-    const pauseButton = this.add
-      .image(this.config.width - 16, this.config.height - 16, "pause")
-      .setInteractive()
-      .setScale(3)
-      .setOrigin(1, 1);
-
-    pauseButton.on("pointerdown", this.pauseGame.bind(this));
   }
 
   createBird() {
@@ -117,6 +96,16 @@ class Play extends Phaser.Scene {
       fontSize: "18px",
       fill: "#000",
     });
+  }
+
+  createPause() {
+    const pauseButton = this.add
+      .image(this.config.width - 16, this.config.height - 16, "pause")
+      .setInteractive()
+      .setScale(3)
+      .setOrigin(1, 1);
+
+    pauseButton.on("pointerdown", this.pauseGame.bind(this));
   }
 
   applyEvents() {
