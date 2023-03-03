@@ -18,8 +18,8 @@ class Base extends Phaser.Scene {
 
   createMenu(menus = []) {
     const fontSize = 32;
-    const fontLineHeight = 32;
-    const fontSpace = fontSize + fontLineHeight;
+    const fontGap = 32;
+    const fontSpace = fontSize + fontGap;
 
     for (const index in menus) {
       const menuItem = this.add
@@ -34,8 +34,16 @@ class Base extends Phaser.Scene {
         .setInteractive()
         .setOrigin(0.5, 0);
 
-      menuItem.on("pointerdown", () => {
+      menuItem.on("pointerup", () => {
         this.scene.start(menus[index].scene);
+      });
+
+      menuItem.on("pointerover", () => {
+        menuItem.setStyle({ fill: "#FF0" });
+      });
+
+      menuItem.on("pointerout", () => {
+        menuItem.setStyle({ fill: "#FFF" });
       });
     }
   }
