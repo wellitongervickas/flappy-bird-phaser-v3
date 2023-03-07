@@ -195,6 +195,7 @@ class Play extends Base {
   pauseGame() {
     this.physics.pause();
     this.scene.pause();
+    this.scene.launch("pause");
   }
 }
 

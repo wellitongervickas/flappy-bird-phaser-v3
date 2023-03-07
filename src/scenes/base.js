@@ -35,7 +35,11 @@ class Base extends Phaser.Scene {
         .setOrigin(0.5, 0);
 
       menuItem.on("pointerup", () => {
-        this.scene.start(menus[index].scene);
+        if (menus[index].pointerup) {
+          menus[index].pointerup();
+        } else {
+          this.scene.start(menus[index].scene);
+        }
       });
 
       menuItem.on("pointerover", () => {
