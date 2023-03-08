@@ -6,6 +6,7 @@ class Play extends Base {
   countdownInitial = 3;
   countdownText;
   countdownEvent;
+  resumeEvent;
   bird;
   flapVelocity = 300;
   pipes;
@@ -108,7 +109,9 @@ class Play extends Base {
   applyEvents() {
     this.input.on("pointerdown", this.flat.bind(this));
     this.input.keyboard.on("keydown-SPACE", this.flat.bind(this));
-    this.events.on("resume", this.resumeGame.bind(this));
+    if (!this.resumeEvent) {
+      this.resumeEvent = this.events.on("resume", this.resumeGame.bind(this));
+    }
   }
 
   placePipe(upperPipe, lowerPipe) {
