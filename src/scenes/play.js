@@ -203,7 +203,6 @@ class Play extends Base {
   }
 
   resumeGame() {
-    // this.scene.run();
     this.countdownText = this.add
       .text(
         this.centerPosition.x,
@@ -230,6 +229,7 @@ class Play extends Base {
     if (this.countdownInitial <= 0) {
       this.countdownText.setText("");
       this.physics.resume();
+      this.countdownEvent.remove();
     }
   }
 }
