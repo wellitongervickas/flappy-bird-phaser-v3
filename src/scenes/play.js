@@ -3,6 +3,9 @@ import Base from "./base";
 class Play extends Base {
   score;
   scoreText;
+  countdownInitial = 3;
+  countdownText;
+  countdownEvent;
   bird;
   flapVelocity = 300;
   pipes;
@@ -105,6 +108,7 @@ class Play extends Base {
   applyEvents() {
     this.input.on("pointerdown", this.flat.bind(this));
     this.input.keyboard.on("keydown-SPACE", this.flat.bind(this));
+    this.events.on("resume", this.resumeGame.bind(this));
   }
 
   placePipe(upperPipe, lowerPipe) {
@@ -196,6 +200,37 @@ class Play extends Base {
     this.physics.pause();
     this.scene.pause();
     this.scene.launch("pause");
+  }
+
+  resumeGame() {
+    // this.scene.run();
+    this.countdownText = this.add
+      .text(
+        this.centerPosition.x,
+        this.centerPosition.y,
+        `Fly in: ${this.countdownInitial}`,
+        {
+          fontSize: 32,
+        }
+      )
+      .setOrigin(0.5);
+
+    this.countdownEvent = this.time.addEvent({
+      delay: 1000,
+      callback: this.setCountdown,
+      callbackScope: this,
+      loop: true,
+    });
+  }
+
+  setCountdown() {
+    this.countdownInitial--;
+    this.countdownText.setText(`Fly in: ${this.countdownInitial}`);
+
+    if (this.countdownInitial <= 0) {
+      this.countdownText.setText("");
+      this.physics.resume();
+    }
   }
 }
 

@@ -8,6 +8,13 @@ class Base extends Phaser.Scene {
     this.config = config;
   }
 
+  get centerPosition() {
+    return {
+      x: this.config.width * 0.5,
+      y: this.config.height * 0.5,
+    };
+  }
+
   create() {
     this.createBackground();
   }
@@ -24,7 +31,7 @@ class Base extends Phaser.Scene {
     for (const index in menus) {
       const menuItem = this.add
         .text(
-          this.config.width * 0.5,
+          this.centerPosition.x,
           this.config.height / menus.length + index * fontSpace,
           menus[index].text,
           {
@@ -32,7 +39,7 @@ class Base extends Phaser.Scene {
           }
         )
         .setInteractive()
-        .setOrigin(0.5, 0);
+        .setOrigin(0.5);
 
       menuItem.on("pointerup", () => {
         if (menus[index].pointerup) {
