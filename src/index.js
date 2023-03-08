@@ -26,6 +26,7 @@ const initScenes = () => scenes.map(createScene);
 const config = {
   // WebGL (Web graphics library) API form rendering 2 and 3D graphics
   type: Phaser.AUTO,
+  pixelArt: true,
   ...SHARED_CONFIG,
   physics: {
     // Arcade physics plugin, anages physics simulation
