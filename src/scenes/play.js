@@ -8,19 +8,38 @@ class Play extends Base {
   countdownEvent;
   resumeEvent;
   isPaused = false;
+  currentDifficulty = "easy";
+  difficulties = {
+    easy: {
+      pipeHorizontalDistanceRange: [300, 350],
+      pipeVerticalDistanceRange: [150, 200],
+    },
+    normal: {
+      pipeHorizontalDistanceRange: [280, 330],
+      pipeVerticalDistanceRange: [140, 190],
+    },
+    harder: {
+      pipeHorizontalDistanceRange: [250, 310],
+      pipeVerticalDistanceRange: [100, 150],
+    },
+  };
   bird;
   flapVelocity = 300;
   pipes;
   pipesToRender = 4;
-  pipeVerticalDistanceRange = [150, 200];
-  pipeHorizontalDistanceRange = [450, 550];
+
   pipeMinVerticalDistanceGap = 20;
 
   constructor(config) {
     super(config, "play");
   }
 
+  get difficultyOptions() {
+    return this.difficulties[this.currentDifficulty];
+  }
+
   create() {
+    this.currentDifficulty = "easy";
     super.create();
     this.createBird();
     this.createPipes();
@@ -32,7 +51,6 @@ class Play extends Base {
 
   update() {
     this.checkBirdStatus();
-
     this.recyclePipes();
   }
 
@@ -120,11 +138,11 @@ class Play extends Base {
     const rightMostX = this.getRightMostPipe();
 
     const pipeVerticalDistance = Phaser.Math.Between(
-      ...this.pipeVerticalDistanceRange
+      ...this.difficultyOptions.pipeVerticalDistanceRange
     );
 
     const pipeHorizontalDistance = Phaser.Math.Between(
-      ...this.pipeHorizontalDistanceRange
+      ...this.difficultyOptions.pipeHorizontalDistanceRange
     );
 
     const pipeVerticalPosition = Phaser.Math.Between(
@@ -150,6 +168,7 @@ class Play extends Base {
         if (tempPipes.length === 2) {
           this.placePipe(...tempPipes);
           this.increaseScore();
+          this.increaseDifficulty();
           this.checkBestScoreStatus();
         }
       }
@@ -187,6 +206,20 @@ class Play extends Base {
   increaseScore() {
     this.score += 1;
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  increaseDifficulty() {
+    if (this.score <= 5) {
+      this.currentDifficulty = "easy";
+    }
+
+    if (this.score > 5 && this.score <= 10) {
+      this.currentDifficulty = "normal";
+    }
+
+    if (this.score > 10) {
+      this.currentDifficulty = "harder";
+    }
   }
 
   checkBestScoreStatus() {
