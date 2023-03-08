@@ -64,7 +64,7 @@ class Play extends Base {
       .setOrigin(0);
 
     this.bird.body.gravity.y = 600;
-
+    this.bird.setBodySize(this.bird.width, this.bird.height - 4);
     this.bird.setCollideWorldBounds(true);
   }
 
