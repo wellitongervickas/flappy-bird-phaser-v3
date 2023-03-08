@@ -31,7 +31,7 @@ const config = {
     // Arcade physics plugin, anages physics simulation
     default: "arcade",
     arcade: {
-      debug: true,
+      // debug: true,
       gravity: {
         /**
          * time 0 = 0px/s

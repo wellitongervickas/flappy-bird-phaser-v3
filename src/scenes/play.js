@@ -47,6 +47,8 @@ class Play extends Base {
     this.createScore();
     this.createPause();
     this.applyEvents();
+
+    this.animeFly();
   }
 
   update() {
@@ -57,6 +59,8 @@ class Play extends Base {
   createBird() {
     this.bird = this.physics.add
       .sprite(this.config.startPosition.x, this.config.startPosition.y, "bird")
+      .setScale(2.5)
+      .setFlipX(true)
       .setOrigin(0);
 
     this.bird.body.gravity.y = 600;
@@ -273,6 +277,20 @@ class Play extends Base {
       this.countdownInitial = 3;
       this.isPaused = false;
     }
+  }
+
+  animeFly() {
+    this.anims.create({
+      key: "fly",
+      frames: this.anims.generateFrameNumbers("bird", {
+        start: 8,
+        end: 15,
+      }),
+      frameRate: 8,
+      repeat: -1, //infinity
+    });
+
+    this.bird.play("fly");
   }
 }
 
