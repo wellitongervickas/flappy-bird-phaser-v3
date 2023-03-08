@@ -7,6 +7,7 @@ class Play extends Base {
   countdownText;
   countdownEvent;
   resumeEvent;
+  isPaused = false;
   bird;
   flapVelocity = 300;
   pipes;
@@ -97,6 +98,7 @@ class Play extends Base {
   }
 
   createPause() {
+    this.isPaused = false;
     const pauseButton = this.add
       .image(this.config.width - 16, this.config.height - 16, "pause")
       .setInteractive()
@@ -165,6 +167,7 @@ class Play extends Base {
   }
 
   flat() {
+    if (this.isPaused) return;
     this.bird.body.velocity.y = -this.flapVelocity;
   }
 
@@ -200,6 +203,7 @@ class Play extends Base {
   }
 
   pauseGame() {
+    this.isPaused = true;
     this.physics.pause();
     this.scene.pause();
     this.scene.launch("pause");
@@ -233,6 +237,8 @@ class Play extends Base {
       this.countdownText.setText("");
       this.physics.resume();
       this.countdownEvent.remove();
+      this.countdownInitial = 3;
+      this.isPaused = false;
     }
   }
 }
